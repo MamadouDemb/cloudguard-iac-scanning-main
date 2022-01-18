@@ -5,10 +5,10 @@ pipeline {
             steps {
                 dir('iac-code') {
                     git branch: 'main',
-                    url: 'https://github.com/gbrembati/terraform-iac-scanning.git'
+                    url: 'https://github.com/MamadouDemb/cloudguard-iac-scanning-main.git'
                 }
                 sh '''
-                    cd iac-code/aws
+                    cd aws
 
                     terraform --version
                     terraform init
@@ -19,14 +19,16 @@ pipeline {
 
         stage('IaC-Shiftleft-Code-Scan') {
             environment {
-               CHKP_CLOUDGUARD_CREDS = credentials('CloudGuard_Credentials')
+               CHKP_CLOUDGUARD_ID = credentials("CHKP_CLOUDGUARD_ID")
+               CHKP_CLOUDGUARD_SECRET = credentials("CHKP_CLOUDGUARD_SECRET")
+               SHIFTLEFT_REGION =  credentials("SHIFTLEFT_REGION")
             }
             steps {
                 sh '''
-                    export SHIFTLEFT_REGION=us
-                    export CHKP_CLOUDGUARD_ID=$CHKP_CLOUDGUARD_CREDS_USR
-                    export CHKP_CLOUDGUARD_SECRET=$CHKP_CLOUDGUARD_CREDS_PSW
-                    shiftleft iac-assessment --Infrastructure-Type terraform --path iac-code/aws --ruleset -64 --severity-level Critical --Findings-row --environmentId <SHIFTLEFT-ENVIRONMENT-ID>
+                    export SHIFTLEFT_REGION=eu1
+                    export CHKP_CLOUDGUARD_ID=$CHKP_CLOUDGUARD_ID
+                    export CHKP_CLOUDGUARD_SECRET=$CHKP_CLOUDGUARD_SECRET
+                    shiftleft iac-assessment --Infrastructure-Type terraform --path iac-code/aws --ruleset -64 --severity-level Critical --Findings-row --environmentId ec00ab44-b2a5-4d4d-9746-ffaa110dd3b4
                 '''
             }
         }
@@ -34,22 +36,26 @@ pipeline {
         stage('IaC-Shiftleft-Execution-Plan') {
             environment {
                AWS_CREDS = credentials('AWS_Credentials')
-               CHKP_CLOUDGUARD_CREDS = credentials('CloudGuard_Credentials')
+               AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
+               AWS_SECRET_ACCESS_KEY = credentials('AWS_ACCESS_KEY_ID')
+               CHKP_CLOUDGUARD_ID = credentials("AWS_SECRET_ACCESS_KEY")
+               CHKP_CLOUDGUARD_SECRET = credentials("CHKP_CLOUDGUARD_SECRET")
+               SHIFTLEFT_REGION =  credentials("SHIFTLEFT_REGION")
             }
             steps {
                 sh '''
-                    export AWS_ACCESS_KEY_ID=$AWS_CREDS_USR
-                    export AWS_SECRET_ACCESS_KEY=$AWS_CREDS_PSW
+                    export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+                    export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
                     export AWS_DEFAULT_REGION="eu-west-1"
 
                     terraform --version
                     terraform plan --out=tf-plan-file
                     terraform show --json tf-plan-file > plan-file.json
 
-                    export SHIFTLEFT_REGION=us
-                    export CHKP_CLOUDGUARD_ID=$CHKP_CLOUDGUARD_CREDS_USR
-                    export CHKP_CLOUDGUARD_SECRET=$CHKP_CLOUDGUARD_CREDS_PSW
-                    shiftleft iac-assessment --Infrastructure-Type terraform --path ./plan-file.json --ruleset -64 --severity-level Critical --Findings-row --environmentId <SHIFTLEFT-ENVIRONMENT-ID>
+                    export SHIFTLEFT_REGION=eu1
+                    export CHKP_CLOUDGUARD_ID=$CHKP_CLOUDGUARD_ID
+                    export CHKP_CLOUDGUARD_SECRET=$CHKP_CLOUDGUARD_SECRET
+                    shiftleft iac-assessment --Infrastructure-Type terraform --path ./plan-file.json --ruleset -64 --severity-level Critical --Findings-row --environmentId ec00ab44-b2a5-4d4d-9746-ffaa110dd3b4
                 '''
             }
         }
