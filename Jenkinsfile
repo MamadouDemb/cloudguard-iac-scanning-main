@@ -29,7 +29,7 @@ pipeline {
                     export CHKP_CLOUDGUARD_ID=$CHKP_CLOUDGUARD_ID
                     export CHKP_CLOUDGUARD_SECRET=$CHKP_CLOUDGUARD_SECRET
                     shiftleft version
-                   if ["$?" = "6" ]; then exit 0; fi
+                   if ["$?" = "254" ]; then exit 0; fi
                 '''
             }
         }
