@@ -29,7 +29,7 @@ pipeline {
                     export CHKP_CLOUDGUARD_ID=$CHKP_CLOUDGUARD_ID
                     export CHKP_CLOUDGUARD_SECRET=$CHKP_CLOUDGUARD_SECRET
                     echo $?
-                    shiftleft --directory ~/shiftleft iac-assessment --Infrastructure-Type terraform --path aws --ruleset -64 --severity-level High  --environmentId ec00ab44-b2a5-4d4d-9746-ffaa110dd3b4
+                    shiftleft --directory ~/shiftleft iac-assessment --Infrastructure-Type terraform --path aws --ruleset -64 --severity-level High  --environmentId ec00ab44-b2a5-4d4d-9746-ffaa110dd3b4 || if ["$?" = "6" ]; then exit 0; fi
                     echo $?
                 '''
             }
