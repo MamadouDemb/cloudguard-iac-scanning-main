@@ -31,6 +31,9 @@ pipeline {
                     shiftleft --directory ~/shiftleft iac-assessment --Infrastructure-Type terraform --path aws --ruleset -64 --severity-level High  --environmentId ec00ab44-b2a5-4d4d-9746-ffaa110dd3b4
 
                 '''
+                sh '''
+                   if ["$?" = "6" ]; then exit 0; fi
+                '''
             }
         }
 
@@ -56,7 +59,7 @@ pipeline {
                     export SHIFTLEFT_REGION=eu1
                     export CHKP_CLOUDGUARD_ID=$CHKP_CLOUDGUARD_ID
                     export CHKP_CLOUDGUARD_SECRET=$CHKP_CLOUDGUARD_SECRET
-                    shiftleft iac-assessment --Infrastructure-Type terraform --path ./plan-file.json --ruleset -64 --severity-level  High --Findings-row --environmentId ec00ab44-b2a5-4d4d-9746-ffaa110dd3b4 || if ["$?" = "6" ]; then exit 0; fi
+                    shiftleft iac-assessment --Infrastructure-Type terraform --path ./plan-file.json --ruleset -64 --severity-level  High --Findings-row --environmentId ec00ab44-b2a5-4d4d-9746-ffaa110dd3b4
                 '''
             }
         }
