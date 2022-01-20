@@ -29,8 +29,8 @@ pipeline {
                     export CHKP_CLOUDGUARD_ID=$CHKP_CLOUDGUARD_ID
                     export CHKP_CLOUDGUARD_SECRET=$CHKP_CLOUDGUARD_SECRET
                     echo $?
-                    shiftleft --directory ~/shiftleft iac-assessment --Infrastructure-Type terraform --path iac-code/aws --ruleset -64 --severity-level High --Findings-row --environmentId ec00ab44-b2a5-4d4d-9746-ffaa110dd3b4
-
+                    shiftleft --directory ~/shiftleft iac-assessment --Infrastructure-Type terraform --path iac-code/aws --ruleset -64 --severity-level High  --environmentId ec00ab44-b2a5-4d4d-9746-ffaa110dd3b4
+                    echo $?
                 '''
             }
         }
