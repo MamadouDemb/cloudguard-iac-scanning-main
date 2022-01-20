@@ -28,8 +28,8 @@ pipeline {
                     export SHIFTLEFT_REGION=eu1
                     export CHKP_CLOUDGUARD_ID=$CHKP_CLOUDGUARD_ID
                     export CHKP_CLOUDGUARD_SECRET=$CHKP_CLOUDGUARD_SECRET
-                    shiftleft --version
-                   if ["$?" != "6" ]; then exit 1; fi
+                    shiftleft version
+                   if ["$?" = "6" ]; then exit 0; fi
                 '''
             }
         }
