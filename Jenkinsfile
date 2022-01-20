@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('IaC-Syntax-Validation') {
             steps {
-                dir('iac-code') {
+                dir('aws') {
                     git branch: 'main',
                     url: 'https://github.com/MamadouDemb/cloudguard-iac-scanning-main.git'
                 }
