@@ -33,6 +33,22 @@ pipeline {
             }
         }
 
+        stage('IaC-Shiftleft-Code-Scan') {
+            environment {
+               CHKP_CLOUDGUARD_ID = credentials("CHKP_CLOUDGUARD_ID")
+               CHKP_CLOUDGUARD_SECRET = credentials("CHKP_CLOUDGUARD_SECRET")
+               SHIFTLEFT_REGION =  credentials("SHIFTLEFT_REGION")
+            }
+            steps {
+                sh '''
+                    export SHIFTLEFT_REGION=eu1
+                    export CHKP_CLOUDGUARD_ID=$CHKP_CLOUDGUARD_ID
+                    export CHKP_CLOUDGUARD_SECRET=$CHKP_CLOUDGUARD_SECRET
+                    shiftleft --version
+                '''
+            }
+        }
+
 
     }
 }
