@@ -33,7 +33,7 @@ pipeline {
             }
         }
 
-        stage('IaC-Shiftleft-Code-Scan') {
+        stage('IaC-Shiftleft-Code-Scan-checkversion') {
             environment {
                CHKP_CLOUDGUARD_ID = credentials("CHKP_CLOUDGUARD_ID")
                CHKP_CLOUDGUARD_SECRET = credentials("CHKP_CLOUDGUARD_SECRET")
