@@ -32,7 +32,7 @@ pipeline {
 
                 '''
                 sh '''
-                   if ["$?" = "6" ]; then exit 0; fi
+                   if ["$?" = "6" ]; then exit 1; fi
                 '''
             }
         }
