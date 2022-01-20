@@ -32,7 +32,7 @@ pipeline {
 
                 '''
                 sh '''
-                   if ["$?" = "6" ]; then echo $?; fi
+                   if ["$?" = "0" ]; then echo $?; fi
                 '''
             }
         }
